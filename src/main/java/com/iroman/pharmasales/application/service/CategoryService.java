@@ -9,7 +9,7 @@ import java.util.List;
 public interface CategoryService {
     List<CategoryDto> findAll();
     CategoryDto findById(Long id);
-    Category create(CategorySaveDto categoryBody);
-    Category edit(Long id, CategorySaveDto categoryBody);
-    Category disable(Long id);
+    CategoryDto create(CategorySaveDto categoryBody);
+    CategoryDto edit(Long id, CategorySaveDto categoryBody);
+    CategoryDto disable(Long id);
 }

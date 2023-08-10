@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category create(CategorySaveDto categoryBody) {
+    public CategoryDto create(CategorySaveDto categoryBody) {
         Category categorySave = categoryMapper.toCategory(categoryBody);
         categorySave.setKeyword(categoryBody.getName());
 
@@ -48,11 +48,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = categoryRepository.save(categorySave);
 
-        return category;
+        return categoryMapper.toCategoryDto(category);
     }
 
     @Override
-    public Category edit(Long id, CategorySaveDto categoryBody) {
+    public CategoryDto edit(Long id, CategorySaveDto categoryBody) {
         Category categoryDb = categoryRepository.findById(id).get();
 
         Category categorySave = categoryMapper.toCategory(categoryBody);
@@ -65,16 +65,16 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = categoryRepository.save(categorySave);
 
-        return category;
+        return categoryMapper.toCategoryDto(category);
     }
 
     @Override
-    public Category disable(Long id) {
+    public CategoryDto disable(Long id) {
         Category categoryDb = categoryRepository.findById(id).get();
         categoryDb.setState("E");
 
         Category category = categoryRepository.save(categoryDb);
 
-        return category;
+        return categoryMapper.toCategoryDto(category);
     }
 }
