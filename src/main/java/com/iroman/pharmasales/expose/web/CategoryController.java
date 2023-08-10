@@ -1,5 +1,6 @@
 package com.iroman.pharmasales.expose.web;
 
+import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.application.service.CategoryService;
 import com.iroman.pharmasales.persistence.entity.Category;
@@ -20,15 +21,15 @@ public class CategoryController {
     // }
 
     @GetMapping
-    ResponseEntity<List<Category>> findAll(){
-        List<Category> categories = categoryService.findAll();
+    ResponseEntity<List<CategoryDto>> findAll(){
+        List<CategoryDto> categories = categoryService.findAll();
 
         return ResponseEntity.ok(categories);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Category> findById(@PathVariable("id") Long id){
-        Category category = categoryService.findById(id);
+    ResponseEntity<CategoryDto> findById(@PathVariable("id") Long id){
+        CategoryDto category = categoryService.findById(id);
 
         return ResponseEntity.ok(category);
     }

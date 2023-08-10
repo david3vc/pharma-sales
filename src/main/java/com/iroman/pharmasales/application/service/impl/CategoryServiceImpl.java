@@ -1,5 +1,6 @@
 package com.iroman.pharmasales.application.service.impl;
 
+import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.application.dto.category.mapper.CategoryMapper;
 import com.iroman.pharmasales.application.service.CategoryService;
@@ -22,17 +23,19 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }*/
     @Override
-    public List<Category> findAll() {
+    public List<CategoryDto> findAll() {
         List<Category> categories = (List<Category>) categoryRepository.findAll();
+        List<CategoryDto> categoryDtos = categoryMapper.toCategoryDtos(categories);
 
-        return categories;
+        return categoryDtos;
     }
 
     @Override
-    public Category findById(Long id) {
+    public CategoryDto findById(Long id) {
         Category category = categoryRepository.findById(id).get();
+        CategoryDto categoryDto = categoryMapper.toCategoryDto(category);
 
-        return category;
+        return categoryDto;
     }
 
     @Override

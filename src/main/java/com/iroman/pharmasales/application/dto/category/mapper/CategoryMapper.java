@@ -1,26 +1,27 @@
 package com.iroman.pharmasales.application.dto.category.mapper;
 
+import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.persistence.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+import java.util.List;
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
     // Entity to Dto start
-
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "keyword", target = "keyword")
+    @Mapping(source = "state", target = "state")
+    @Mapping(source = "createdAt", target = "createdAt")
+    @Mapping(source = "updatedAt", target = "updatedAt")
+    CategoryDto toCategoryDto(Category category);
+    List<CategoryDto> toCategoryDtos(List<Category> categories);
     // Entity to Dto end
-
-    /*
-    private Long id;
-    private String name;
-    private String description;
-    private String keyword;
-    private String state;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    */
 
     // Dto to Entity start
     @Mapping(source = "name", target = "name")
