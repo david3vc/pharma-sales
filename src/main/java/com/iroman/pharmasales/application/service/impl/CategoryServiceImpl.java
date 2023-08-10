@@ -6,6 +6,7 @@ import com.iroman.pharmasales.application.dto.category.mapper.CategoryMapper;
 import com.iroman.pharmasales.application.service.CategoryService;
 import com.iroman.pharmasales.persistence.entity.Category;
 import com.iroman.pharmasales.persistence.repository.CategoryRepository;
+import com.iroman.pharmasales.shared.string.StringHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto create(CategorySaveDto categoryBody) {
         Category categorySave = categoryMapper.toCategory(categoryBody);
-        categorySave.setKeyword(categoryBody.getName());
-
+        categorySave.setKeyword(new StringHelper().slugsKeywords(categorySave.getName()));
         categorySave.setState("A");
         categorySave.setCreatedAt(LocalDateTime.now());
 
@@ -56,9 +56,9 @@ public class CategoryServiceImpl implements CategoryService {
         Category categoryDb = categoryRepository.findById(id).get();
 
         Category categorySave = categoryMapper.toCategory(categoryBody);
+        categorySave.setKeyword(new StringHelper().slugsKeywords(categorySave.getName()));
 
         categorySave.setId(categoryDb.getId());
-        categorySave.setKeyword(categorySave.getName());
         categorySave.setState(categoryDb.getState());
         categorySave.setCreatedAt(categoryDb.getCreatedAt());
         categorySave.setUpdatedAt(LocalDateTime.now());

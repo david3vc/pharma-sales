@@ -3,7 +3,6 @@ package com.iroman.pharmasales.expose.web;
 import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.application.service.CategoryService;
-import com.iroman.pharmasales.persistence.entity.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
