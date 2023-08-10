@@ -3,13 +3,14 @@ package com.iroman.pharmasales.application.dto.category.mapper;
 import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.persistence.entity.Category;
+import com.iroman.pharmasales.shared.state.mapper.StateMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {StateMapper.class})
 public interface CategoryMapper {
     // Entity to Dto start
     @Mapping(source = "id", target = "id")

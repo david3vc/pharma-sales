@@ -6,7 +6,7 @@ import com.iroman.pharmasales.application.dto.category.mapper.CategoryMapper;
 import com.iroman.pharmasales.application.service.CategoryService;
 import com.iroman.pharmasales.persistence.entity.Category;
 import com.iroman.pharmasales.persistence.repository.CategoryRepository;
-import com.iroman.pharmasales.shared.enums.State;
+import com.iroman.pharmasales.shared.state.enums.State;
 import com.iroman.pharmasales.shared.string.StringHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto disable(Long id) {
         Category categoryDb = categoryRepository.findById(id).get();
-        categoryDb.setState(State.DESACTIVE.getValue());
+        categoryDb.setState(State.DISABLE.getValue());
 
         Category category = categoryRepository.save(categoryDb);
 
