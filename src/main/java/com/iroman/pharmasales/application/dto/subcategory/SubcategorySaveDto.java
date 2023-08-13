@@ -6,4 +6,5 @@ import lombok.Data;
 public class SubcategorySaveDto {
     private String name;
     private String description;
+    private Long categoryId;
 }

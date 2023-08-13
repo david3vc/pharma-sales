@@ -4,11 +4,15 @@ import com.iroman.pharmasales.application.dto.subcategory.SubcategoryDto;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategorySaveDto;
 import com.iroman.pharmasales.application.dto.subcategory.mapper.SubcategoryMapper;
 import com.iroman.pharmasales.application.service.SubcategoryService;
+import com.iroman.pharmasales.persistence.entity.Category;
 import com.iroman.pharmasales.persistence.entity.Subcategory;
 import com.iroman.pharmasales.persistence.repository.SubcategoryRepository;
+import com.iroman.pharmasales.shared.state.enums.State;
+import com.iroman.pharmasales.shared.string.StringHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,17 +36,38 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     }
 
     @Override
-    public SubcategoryDto create(SubcategorySaveDto subcategorySaveDto) {
-        return null;
+    public SubcategoryDto create(SubcategorySaveDto subcategoryBody) {
+        Subcategory subcategorySave = subcategoryMapper.toSubcateogry(subcategoryBody);
+        subcategorySave.setKeyword(new StringHelper().slugsKeywords(subcategorySave.getName()));
+        subcategorySave.setState(State.ACTIVE.getValue());
+        subcategorySave.setCreatedAt(LocalDateTime.now());
+
+        Subcategory subcategory = subcategoryRepository.save(subcategorySave);
+
+        return subcategoryMapper.toSubcategoryDto(subcategory);
     }
 
     @Override
-    public SubcategoryDto edit(Long id, SubcategorySaveDto subcategorySaveDto) {
-        return null;
+    public SubcategoryDto edit(Long id, SubcategorySaveDto subcategoryBody) {
+        Subcategory subcategoryDb = subcategoryRepository.findById(id).get();
+
+        subcategoryMapper.updateSubcategory(subcategoryDb, subcategoryBody);
+
+        subcategoryDb.setKeyword(new StringHelper().slugsKeywords(subcategoryBody.getName()));
+        subcategoryDb.setUpdatedAt(LocalDateTime.now());
+
+        Subcategory subcategory = subcategoryRepository.save(subcategoryDb);
+
+        return subcategoryMapper.toSubcategoryDto(subcategory);
     }
 
     @Override
     public SubcategoryDto disable(Long id) {
-        return null;
+        Subcategory subcategoryDb = subcategoryRepository.findById(id).get();
+        subcategoryDb.setState(State.DISABLE.getValue());
+
+        Subcategory subcategory = subcategoryRepository.save(subcategoryDb);
+
+        return subcategoryMapper.toSubcategoryDto(subcategory);
     }
 }

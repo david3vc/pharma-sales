@@ -8,7 +8,7 @@ import java.util.List;
 public interface SubcategoryService {
     List<SubcategoryDto> findAll();
     SubcategoryDto findById(Long id);
-    SubcategoryDto create(SubcategorySaveDto subcategorySaveDto);
-    SubcategoryDto edit(Long id, SubcategorySaveDto subcategorySaveDto);
+    SubcategoryDto create(SubcategorySaveDto subcategoryBody);
+    SubcategoryDto edit(Long id, SubcategorySaveDto subcategoryBody);
     SubcategoryDto disable(Long id);
 }

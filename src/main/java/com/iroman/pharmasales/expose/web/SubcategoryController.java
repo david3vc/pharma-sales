@@ -1,14 +1,11 @@
 package com.iroman.pharmasales.expose.web;
 
-import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategoryDto;
+import com.iroman.pharmasales.application.dto.subcategory.SubcategorySaveDto;
 import com.iroman.pharmasales.application.service.SubcategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,26 @@ public class SubcategoryController {
         SubcategoryDto subcategory = subcategoryService.findById(id);
 
         return ResponseEntity.ok(subcategory);
+    }
+
+    @PostMapping
+    ResponseEntity<SubcategoryDto> create(@RequestBody SubcategorySaveDto subcategoryBody){
+        SubcategoryDto subcategory = subcategoryService.create(subcategoryBody);
+
+        return ResponseEntity.ok(subcategory);
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<SubcategoryDto> edit(@PathVariable("id") Long id, @RequestBody SubcategorySaveDto subcategoryBody){
+        SubcategoryDto subcategory = subcategoryService.edit(id, subcategoryBody);
+
+        return ResponseEntity.ok(subcategory);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<SubcategoryDto> disable(@PathVariable("id") Long id){
+        SubcategoryDto subcategory = subcategoryService.disable(id);
+
+        return  ResponseEntity.ok(subcategory);
     }
 }

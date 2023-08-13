@@ -6,9 +6,7 @@ import com.iroman.pharmasales.application.dto.subcategory.SubcategoryDto;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategorySaveDto;
 import com.iroman.pharmasales.persistence.entity.Subcategory;
 import com.iroman.pharmasales.shared.state.mapper.StateMapper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -31,11 +29,16 @@ public interface SubcategoryMapper {
     // Dto to Entity start
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
+    @Mapping(source = "categoryId", target = "categoryId")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "keyword", ignore = true)
+    @Mapping(target = "category", ignore = true)
     @Mapping(target = "state", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     Subcategory toSubcateogry(SubcategorySaveDto subcategorySaveDto);
+
+    @InheritConfiguration
+    void updateSubcategory(@MappingTarget Subcategory subcategory, SubcategorySaveDto subcategorySaveDto);
     // Dto to Entity end
 }
