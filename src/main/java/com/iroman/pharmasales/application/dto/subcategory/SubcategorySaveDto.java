@@ -1,0 +1,9 @@
+package com.iroman.pharmasales.application.dto.subcategory;
+
+import lombok.Data;
+
+@Data
+public class SubcategorySaveDto {
+    private String name;
+    private String description;
+}
