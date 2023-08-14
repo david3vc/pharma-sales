@@ -30,21 +30,21 @@ public class SubcategoryController {
     }
 
     @PostMapping
-    ResponseEntity<SubcategoryDto> create(@RequestBody SubcategorySaveDto subcategoryBody){
+    public ResponseEntity<SubcategoryDto> create(@RequestBody SubcategorySaveDto subcategoryBody){
         SubcategoryDto subcategory = subcategoryService.create(subcategoryBody);
 
         return ResponseEntity.ok(subcategory);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<SubcategoryDto> edit(@PathVariable("id") Long id, @RequestBody SubcategorySaveDto subcategoryBody){
+    public ResponseEntity<SubcategoryDto> edit(@PathVariable("id") Long id, @RequestBody SubcategorySaveDto subcategoryBody){
         SubcategoryDto subcategory = subcategoryService.edit(id, subcategoryBody);
 
         return ResponseEntity.ok(subcategory);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<SubcategoryDto> disable(@PathVariable("id") Long id){
+    public ResponseEntity<SubcategoryDto> disable(@PathVariable("id") Long id){
         SubcategoryDto subcategory = subcategoryService.disable(id);
 
         return  ResponseEntity.ok(subcategory);

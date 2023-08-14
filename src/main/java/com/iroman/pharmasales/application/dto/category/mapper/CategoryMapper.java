@@ -14,29 +14,30 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {StateMapper.class})
 public interface CategoryMapper {
-    // Entity to Dto start
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "keyword", target = "keyword")
-    @Mapping(source = "state", target = "state")
-    @Mapping(source = "createdAt", target = "createdAt")
-    @Mapping(source = "updatedAt", target = "updatedAt")
+    // Dto from Entity start
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "keyword", source = "keyword")
+    @Mapping(target = "state", source = "state")
+    @Mapping(target = "createdAt", source = "createdAt")
+    @Mapping(target = "updatedAt", source = "updatedAt")
     CategoryDto toCategoryDto(Category category);
     List<CategoryDto> toCategoryDtos(List<Category> categories);
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
-    CategorySimpleDto toCategorySimpleDto(Subcategory subcategory);
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    CategorySimpleDto toCategorySimpleDto(Category category);
+    List<CategorySimpleDto> toCategorySimpleDtos(List<Category> categories);
     // Entity to Dto end
 
-    // Dto to Entity start
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "description", target = "description")
+    // Entity from Dto start
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "description", source = "description")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "keyword", ignore = true)
     @Mapping(target = "state", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     Category toCategory(CategorySaveDto categorySaveDto);
-    // Dto to Entity end
+    // Entity from Dto end
 }
