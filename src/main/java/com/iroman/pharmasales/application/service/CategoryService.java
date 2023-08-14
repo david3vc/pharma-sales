@@ -4,6 +4,7 @@ import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.application.dto.category.CategorySimpleDto;
 import com.iroman.pharmasales.persistence.entity.Category;
+import com.iroman.pharmasales.shared.state.enums.State;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,5 +17,6 @@ public interface CategoryService {
     CategoryDto edit(Long id, CategorySaveDto categoryBody);
     CategoryDto disable(Long id);
     List<CategorySimpleDto> select();
+    List<CategorySimpleDto> searchByState(String state);
     Page<CategoryDto> pagination(Pageable pageable);
 }

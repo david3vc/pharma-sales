@@ -4,6 +4,8 @@ import com.iroman.pharmasales.application.dto.category.CategoryDto;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.application.dto.category.CategorySimpleDto;
 import com.iroman.pharmasales.application.service.CategoryService;
+import com.iroman.pharmasales.shared.state.enums.State;
+import com.iroman.pharmasales.shared.state.mapper.StateMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 public class CategoryController {
     private final CategoryService categoryService;
+    private final StateMapper stateMapper;
 
     // public CategoryController(CategoryRepository categoryRepository){
         // this.categoryRepository = categoryRepository;
@@ -60,6 +63,13 @@ public class CategoryController {
     @GetMapping("/select")
     ResponseEntity<List<CategorySimpleDto>> select(){
         List<CategorySimpleDto> category = categoryService.select();
+
+        return ResponseEntity.ok(category);
+    }
+
+    @GetMapping("/search-by-state/{state}")
+    ResponseEntity<List<CategorySimpleDto>> searchByState(@PathVariable("state") String state){
+        List<CategorySimpleDto> category = categoryService.searchByState(state);
 
         return ResponseEntity.ok(category);
     }
