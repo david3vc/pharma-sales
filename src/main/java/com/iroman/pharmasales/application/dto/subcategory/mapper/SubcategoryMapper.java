@@ -3,6 +3,7 @@ package com.iroman.pharmasales.application.dto.subcategory.mapper;
 import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.application.dto.category.mapper.CategoryMapper;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategoryDto;
+import com.iroman.pharmasales.application.dto.subcategory.SubcategoryFilterDto;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategorySaveDto;
 import com.iroman.pharmasales.persistence.entity.Subcategory;
 import com.iroman.pharmasales.shared.state.mapper.StateMapper;
@@ -12,33 +13,44 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {StateMapper.class, CategoryMapper.class})
 public interface SubcategoryMapper {
-    // Entity to Dto start
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "keyword", target = "keyword")
-    @Mapping(source = "state", target = "state")
-    @Mapping(source = "category", target = "category")
-    @Mapping(source = "createdAt", target = "createdAt")
-    @Mapping(source = "updatedAt", target = "updatedAt")
+    // Dto from Entity start
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "keyword", source = "keyword")
+    @Mapping(target = "state", source = "state")
+    @Mapping(target = "category", source = "category")
+    @Mapping(target = "createdAt", source = "createdAt")
+    @Mapping(target = "updatedAt", source = "updatedAt")
     SubcategoryDto toSubcategoryDto(Subcategory subcategory);
 
     List<SubcategoryDto> toSubcategoryDtos(List<Subcategory> subcategories);
-    // Entity to Dto end
+    // Dto from Entity end
 
-    // Dto to Entity start
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "categoryId", target = "categoryId")
+    // Entity from Dto start
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "categoryId", source = "categoryId")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "keyword", ignore = true)
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "state", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    Subcategory toSubcateogry(SubcategorySaveDto subcategorySaveDto);
+    Subcategory toSubcategory(SubcategorySaveDto subcategorySaveDto);
 
     @InheritConfiguration
     void updateSubcategory(@MappingTarget Subcategory subcategory, SubcategorySaveDto subcategorySaveDto);
-    // Dto to Entity end
+
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "categoryId", source = "categoryId")
+    @Mapping(target = "state", source = "state")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "keyword", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    Subcategory toSubcategory(SubcategoryFilterDto subcategoryFilterDto);
+    // Entity from Dto end
 }
