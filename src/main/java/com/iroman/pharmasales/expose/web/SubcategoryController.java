@@ -4,7 +4,13 @@ import com.iroman.pharmasales.application.dto.subcategory.SubcategoryDto;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategoryFilterDto;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategorySaveDto;
 import com.iroman.pharmasales.application.service.SubcategoryService;
+import com.iroman.pharmasales.shared.constant.StatusCode;
 import com.iroman.pharmasales.shared.exception.DataNotFoundException;
+import com.iroman.pharmasales.shared.exception.entity.ArgumentNotValidError;
+import com.iroman.pharmasales.shared.exception.entity.GeneralError;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +28,7 @@ import java.util.Optional;
 public class SubcategoryController {
     private final SubcategoryService subcategoryService;
 
+    @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping
     public ResponseEntity<List<SubcategoryDto>> findAll(){
         List<SubcategoryDto> subcategories = subcategoryService.findAll();
@@ -30,6 +37,14 @@ public class SubcategoryController {
                 .body(subcategories);
     }
 
+    @ApiResponse(responseCode = StatusCode.OK)
+    @ApiResponse(
+            responseCode = StatusCode.NOT_FOUND,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = GeneralError.class)
+            )
+    )
     @GetMapping("/{id}")
     public ResponseEntity<SubcategoryDto> findById(@PathVariable("id") Long id) throws DataNotFoundException {
         SubcategoryDto subcategory = subcategoryService.findById(id);
@@ -38,6 +53,21 @@ public class SubcategoryController {
                 .body(subcategory);
     }
 
+    @ApiResponse(responseCode = StatusCode.CREATED)
+    @ApiResponse(
+            responseCode = StatusCode.BAD_REQUEST,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ArgumentNotValidError.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = StatusCode.NOT_FOUND,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = GeneralError.class)
+            )
+    )
     @PostMapping
     public ResponseEntity<SubcategoryDto> create(@Valid @RequestBody SubcategorySaveDto subcategoryBody) throws DataNotFoundException {
         SubcategoryDto subcategory = subcategoryService.create(subcategoryBody);
@@ -46,6 +76,21 @@ public class SubcategoryController {
                 .body(subcategory);
     }
 
+    @ApiResponse(responseCode = StatusCode.OK)
+    @ApiResponse(
+            responseCode = StatusCode.BAD_REQUEST,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ArgumentNotValidError.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = StatusCode.NOT_FOUND,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = GeneralError.class)
+            )
+    )
     @PutMapping("/{id}")
     public ResponseEntity<SubcategoryDto> edit(@Valid @PathVariable("id") Long id, @RequestBody SubcategorySaveDto subcategoryBody) throws DataNotFoundException {
         SubcategoryDto subcategory = subcategoryService.edit(id, subcategoryBody);
@@ -54,6 +99,14 @@ public class SubcategoryController {
                 .body(subcategory);
     }
 
+    @ApiResponse(responseCode = StatusCode.OK)
+    @ApiResponse(
+            responseCode = StatusCode.NOT_FOUND,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = GeneralError.class)
+            )
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<SubcategoryDto> disable(@PathVariable("id") Long id) throws DataNotFoundException {
         SubcategoryDto subcategory = subcategoryService.disable(id);
@@ -62,6 +115,7 @@ public class SubcategoryController {
                 .body(subcategory);
     }
 
+    @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping("/filter")
     public ResponseEntity<List<SubcategoryDto>> filter(Optional<SubcategoryFilterDto> filter){
         List<SubcategoryDto> subcategories = subcategoryService.filter(filter);
@@ -70,6 +124,7 @@ public class SubcategoryController {
                 .body(subcategories);
     }
 
+    @ApiResponse(responseCode = StatusCode.OK)
     @GetMapping("/pagination-filter")
     ResponseEntity<Page<SubcategoryDto>> pagination(Pageable pageable, Optional<SubcategoryFilterDto> filter){
         Page<SubcategoryDto> subcategoryDtoPage = subcategoryService.paginationFilter(pageable, filter);
