@@ -1,4 +1,4 @@
-package com.iroman.pharmasales.application.dto.documentType;
+package com.iroman.pharmasales.application.dto.documenttype;
 
 import com.iroman.pharmasales.shared.state.enums.State;
 import lombok.Data;
@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 public class DocumentTypeDto {
     private Long id;
     private String name;
+    private String description;
     private String sunatCode;
     private Integer size;
-    private Integer isSizeExact;
-    private Integer isNumeric;
+    private Boolean isSizeExact;
+    private Boolean isNumeric;
     private State state;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

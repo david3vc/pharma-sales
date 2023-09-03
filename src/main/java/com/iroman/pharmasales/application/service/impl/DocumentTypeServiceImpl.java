@@ -1,15 +1,15 @@
 package com.iroman.pharmasales.application.service.impl;
 
-import com.iroman.pharmasales.application.dto.category.CategoryDto;
-import com.iroman.pharmasales.application.dto.documentType.DocumentTypeDto;
-import com.iroman.pharmasales.application.dto.documentType.DocumentTypeSaveDto;
-import com.iroman.pharmasales.application.dto.documentType.mapper.DocumentTypeMapper;
+import com.iroman.pharmasales.application.dto.documenttype.DocumentTypeDto;
+import com.iroman.pharmasales.application.dto.documenttype.DocumentTypeFilterDto;
+import com.iroman.pharmasales.application.dto.documenttype.DocumentTypeSaveDto;
+import com.iroman.pharmasales.application.dto.documenttype.DocumentTypeSimpleDto;
+import com.iroman.pharmasales.application.dto.documenttype.mapper.DocumentTypeMapper;
 import com.iroman.pharmasales.application.service.DocumentTypeService;
-import com.iroman.pharmasales.persistence.entity.Category;
 import com.iroman.pharmasales.persistence.entity.DocumentType;
 import com.iroman.pharmasales.persistence.repository.DocumentTypeRepository;
+import com.iroman.pharmasales.shared.exception.DataNotFoundException;
 import com.iroman.pharmasales.shared.state.enums.State;
-import com.iroman.pharmasales.shared.string.StringHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -33,8 +34,9 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
-    public DocumentTypeDto findById(Long id) {
-        DocumentType documentType = documentTypeRepository.findById(id).get();
+    public DocumentTypeDto findById(Long id) throws DataNotFoundException {
+        DocumentType documentType = documentTypeRepository.findById(id)
+                .orElseThrow(() -> documentTypeNotFoundExecption(id));
 
         return documentTypeMapper.toDocumentTypeDto(documentType);
     }
@@ -51,8 +53,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
-    public DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeBody) {
-        DocumentType documentTypeDb = documentTypeRepository.findById(id).get();
+    public DocumentTypeDto edit(Long id, DocumentTypeSaveDto documentTypeBody) throws DataNotFoundException {
+        DocumentType documentTypeDb = documentTypeRepository.findById(id).orElseThrow(() -> documentTypeNotFoundExecption(id));
 
         DocumentType documentTypeSave = documentTypeMapper.toDocumentType(documentTypeBody);
 
@@ -67,8 +69,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
-    public DocumentTypeDto disable(Long id) {
-        DocumentType documentTypeDb = documentTypeRepository.findById(id).get();
+    public DocumentTypeDto disable(Long id) throws DataNotFoundException {
+        DocumentType documentTypeDb = documentTypeRepository.findById(id).orElseThrow(() -> documentTypeNotFoundExecption(id));
         documentTypeDb.setState(State.DISABLE.getValue());
 
         DocumentType documentType = documentTypeRepository.save(documentTypeDb);
@@ -77,13 +79,35 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
-    public Page<DocumentTypeDto> pagination(Pageable pageable) {
-        Page<DocumentType> documentTypePage = documentTypeRepository.findAll(pageable);
+    public List<DocumentTypeSimpleDto> select() {
+        List<DocumentType> documentTypes = documentTypeRepository.findByState(State.ACTIVE.getValue());
+
+        return documentTypeMapper.toDocumentTypeSimpleDtos(documentTypes);
+    }
+
+    @Override
+    public List<DocumentTypeSimpleDto> searchByState(String state) {
+        List<DocumentType> documentTypes = documentTypeRepository.searchByState(state);
+
+        return documentTypeMapper.toDocumentTypeSimpleDtos(documentTypes);
+    }
+
+    @Override
+    public Page<DocumentTypeDto> paginationFilter(Pageable pageable, Optional<DocumentTypeFilterDto> filter) {
+        DocumentTypeFilterDto filterDto = filter.orElse((new DocumentTypeFilterDto()));
+
+        DocumentType documentType = documentTypeMapper.toDocumentType(filterDto);
+
+        Page<DocumentType> documentTypePage = documentTypeRepository.paginationFilter(pageable, documentType);
 
         List<DocumentTypeDto> documentTypeDtos = documentTypeMapper.toDocumentTypeDtos(documentTypePage.getContent());
 
         Page<DocumentTypeDto> documentTypeDtoPage = new PageImpl<>(documentTypeDtos, documentTypePage.getPageable(), documentTypePage.getTotalElements());
 
         return documentTypeDtoPage;
+    }
+
+    private static DataNotFoundException documentTypeNotFoundExecption(Long id){
+        return new DataNotFoundException(("DocumentType no encontrado para el id: " + id));
     }
 }
