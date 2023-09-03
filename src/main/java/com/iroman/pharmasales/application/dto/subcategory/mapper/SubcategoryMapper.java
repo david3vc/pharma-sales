@@ -1,6 +1,5 @@
 package com.iroman.pharmasales.application.dto.subcategory.mapper;
 
-import com.iroman.pharmasales.application.dto.category.CategorySaveDto;
 import com.iroman.pharmasales.application.dto.category.mapper.CategoryMapper;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategoryDto;
 import com.iroman.pharmasales.application.dto.subcategory.SubcategoryFilterDto;
