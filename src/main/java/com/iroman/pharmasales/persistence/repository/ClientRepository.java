@@ -8,7 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ClientRepository extends CrudRepository<Client, Long> {
+    @Query(value = "SELECT c FROM Client c" +
+            " WHERE CONCAT(UPPER(c.name), ' ', UPPER(c.lastName), ' ', UPPER(c.documentNumber)) LIKE UPPER(CONCAT('%',:searchText,'%')) " +
+            " AND c.state = 'A'")
+    List<Client> search(@Param("searchText") String searchText);
     @Query(value = "SELECT c FROM Client c" +
             " WHERE (:#{#client.name} IS NULL OR UPPER(c.name) LIKE UPPER(CONCAT('%',:#{#client.name},'%')))" +
             " AND (:#{#client.lastName} IS NULL OR UPPER(c.lastName) LIKE UPPER(CONCAT('%',:#{#client.lastName},'%')))" +
